@@ -16,5 +16,13 @@ Script is written and tested using python 3.10
 
 Example plots:
 
-![s11](assets/s11 real part.png)
-![s21](assets/s21 real part.png)
+
+![S11](assets/S11%20imaginary%20part.png)
+![S11](assets/S11%20real%20part.png)
+![S11](assets/S11%20magnitude.png)
+![S11](assets/S11%20phase.png)
+
+![S21](assets/S21%20imaginary%20part.png)
+![S21](assets/S21%20real%20part.png)
+![S21](assets/S21%20magnitude.png)
+![S21](assets/S21%20phase.png)
