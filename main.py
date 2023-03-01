@@ -167,13 +167,13 @@ if __name__ == '__main__':
 
     print(f"Number of loaded files: {len(all_the_data)}")
 
-    # plot_real(Connection.S11, all_the_data, onlyfiles)
-    # plot_imag(Connection.S11, all_the_data, onlyfiles)
-    # plot_magnitude(Connection.S11, all_the_data, onlyfiles)
-    # plot_phase(Connection.S11, all_the_data, onlyfiles)
+    plot_real(Connection.S11, all_the_data, onlyfiles)
+    plot_imag(Connection.S11, all_the_data, onlyfiles)
+    plot_magnitude(Connection.S11, all_the_data, onlyfiles)
+    plot_phase(Connection.S11, all_the_data, onlyfiles)
 
-    # plot_real(Connection.S21, all_the_data, onlyfiles)
-    # plot_imag(Connection.S21, all_the_data, onlyfiles)
-    # plot_magnitude(Connection.S21, all_the_data, onlyfiles)
-    # plot_phase(Connection.S21, all_the_data, onlyfiles)
+    plot_real(Connection.S21, all_the_data, onlyfiles)
+    plot_imag(Connection.S21, all_the_data, onlyfiles)
+    plot_magnitude(Connection.S21, all_the_data, onlyfiles)
+    plot_phase(Connection.S21, all_the_data, onlyfiles)
     plot_double_magnitude(all_the_data, onlyfiles)
