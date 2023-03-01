@@ -15,11 +15,11 @@ S21_IMAG = 'S21-S-Imaginary'
 
 
 class Connection(enum.Enum):
-    S11 = "S11"
-    S21 = "S21"
+    S11 = "S11"  # reflection   
+    S21 = "S21" # transmition
 
 
-def plot_real(connection: Connection, all_the_data: list[pd.DataFrame], labels=list[str]):
+def plot_real(connection, all_the_data, labels):
     title = f"{str(connection.value)} real part"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
@@ -35,13 +35,13 @@ def plot_real(connection: Connection, all_the_data: list[pd.DataFrame], labels=l
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1, 1))
     plt.tight_layout()
     plt.savefig(f'{title}.png')
     plt.show()
 
 
-def plot_imag(connection: Connection, all_the_data: list[pd.DataFrame], labels=list[str]):
+def plot_imag(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} imaginary part"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
@@ -57,18 +57,17 @@ def plot_imag(connection: Connection, all_the_data: list[pd.DataFrame], labels=l
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1, 1))
     plt.tight_layout()
     plt.savefig(f'{title}.png')
     plt.show()
-
 
 # magnitude [dB] = 20 * Log(sqr(Re^2 + Im^2))
 def magnitude(real, imag):
     return 20 * math.log(math.sqrt(real ** 2 + imag ** 2))
 
 
-def plot_magnitude(connection: Connection, all_the_data: list[pd.DataFrame], labels=list[str]):
+def plot_magnitude(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} magnitude"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
@@ -87,7 +86,7 @@ def plot_magnitude(connection: Connection, all_the_data: list[pd.DataFrame], lab
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1, 1))
     plt.tight_layout()
     plt.savefig(f'{title}.png')
     plt.show()
@@ -98,7 +97,7 @@ def phase(real, imag):
     return math.atan(imag / real)
 
 
-def plot_phase(connection: Connection, all_the_data: list[pd.DataFrame], labels=list[str]):
+def plot_phase(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} phase"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
@@ -117,7 +116,26 @@ def plot_phase(connection: Connection, all_the_data: list[pd.DataFrame], labels=
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1, 1))
+    plt.tight_layout()
+    plt.savefig(f'{title}.png')
+    plt.show()
+
+def plot_double_magnitude(all_the_data, labels):
+    title = "S11 and S21 Magnitude"
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("[dB]")
+    plt.title(title)
+    x_axis = all_the_data[0][FREQUENCY].values.tolist()
+
+    for data, label in zip(all_the_data, labels):
+        y_values = [magnitude(r, i) for r, i in zip(data[S11_REAL].values.tolist(), data[S11_IMAG].values.tolist())]
+        plt.plot(x_axis, y_values, label=f"s11 {label}")
+
+        y_values = [magnitude(r, i) for r, i in zip(data[S21_REAL].values.tolist(), data[S21_IMAG].values.tolist())]
+        plt.plot(x_axis, y_values,label=f"s21 {label}")
+
+    plt.legend(bbox_to_anchor=(1, 1))
     plt.tight_layout()
     plt.savefig(f'{title}.png')
     plt.show()
@@ -131,7 +149,9 @@ def replace_comma_with_dot(string: str):
 
 
 if __name__ == '__main__':
-    directory_path = "./example_data"
+    
+    directory_path = "dwie_anteny"
+
     # list all the '.csv' files under directory_path
     onlyfiles = [f for f in listdir(directory_path) if
                  isfile(join(directory_path, f)) and join(directory_path, f)[-4:] == '.csv']
@@ -142,6 +162,7 @@ if __name__ == '__main__':
     # some files for no apparent reason, have numbers decoded with comma instead of dot
     # so for example: '3,14' instead of '3.14'
     all_the_data = [dataframe.applymap(replace_comma_with_dot) for dataframe in all_the_data]
+
     # some files for no apparent reason, have numbers decoded as string not floats
     all_the_data = [dataframe.astype(float) for dataframe in all_the_data]
 
@@ -159,3 +180,4 @@ if __name__ == '__main__':
     plot_imag(Connection.S21, all_the_data, onlyfiles)
     plot_magnitude(Connection.S21, all_the_data, onlyfiles)
     plot_phase(Connection.S21, all_the_data, onlyfiles)
+    plot_double_magnitude(all_the_data, onlyfiles)
