@@ -18,6 +18,10 @@ class Connection(enum.Enum):
     S11 = "S11"  # reflection   
     S21 = "S21" # transmition
 
+def plot_config(title):
+    plt.legend(bbox_to_anchor=(1, 1))
+    plt.gcf().set_size_inches(21, 9)
+    plt.savefig(f'{title}.png', dpi=200)
 
 def plot_real(connection, all_the_data, labels):
     title = f"{str(connection.value)} real part"
@@ -35,9 +39,7 @@ def plot_real(connection, all_the_data, labels):
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend(bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.savefig(f'{title}.png')
+    plot_config(title)
     plt.show()
 
 
@@ -57,9 +59,7 @@ def plot_imag(connection: Connection, all_the_data, labels):
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend(bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.savefig(f'{title}.png')
+    plot_config(title)
     plt.show()
 
 # magnitude [dB] = 20 * Log(sqr(Re^2 + Im^2))
@@ -86,9 +86,7 @@ def plot_magnitude(connection: Connection, all_the_data, labels):
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend(bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.savefig(f'{title}.png')
+    plot_config(title)
     plt.show()
 
 
@@ -116,10 +114,10 @@ def plot_phase(connection: Connection, all_the_data, labels):
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plt.legend(bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.savefig(f'{title}.png')
+    plot_config(title)
     plt.show()
+
+
 
 def plot_double_magnitude(all_the_data, labels):
     title = "S11 and S21 Magnitude"
@@ -135,9 +133,7 @@ def plot_double_magnitude(all_the_data, labels):
         y_values = [magnitude(r, i) for r, i in zip(data[S21_REAL].values.tolist(), data[S21_IMAG].values.tolist())]
         plt.plot(x_axis, y_values,label=f"s21 {label}")
 
-    plt.legend(bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.savefig(f'{title}.png')
+    plot_config(title)
     plt.show()
 
 
@@ -171,13 +167,13 @@ if __name__ == '__main__':
 
     print(f"Number of loaded files: {len(all_the_data)}")
 
-    plot_real(Connection.S11, all_the_data, onlyfiles)
-    plot_imag(Connection.S11, all_the_data, onlyfiles)
-    plot_magnitude(Connection.S11, all_the_data, onlyfiles)
-    plot_phase(Connection.S11, all_the_data, onlyfiles)
+    # plot_real(Connection.S11, all_the_data, onlyfiles)
+    # plot_imag(Connection.S11, all_the_data, onlyfiles)
+    # plot_magnitude(Connection.S11, all_the_data, onlyfiles)
+    # plot_phase(Connection.S11, all_the_data, onlyfiles)
 
-    plot_real(Connection.S21, all_the_data, onlyfiles)
-    plot_imag(Connection.S21, all_the_data, onlyfiles)
-    plot_magnitude(Connection.S21, all_the_data, onlyfiles)
-    plot_phase(Connection.S21, all_the_data, onlyfiles)
+    # plot_real(Connection.S21, all_the_data, onlyfiles)
+    # plot_imag(Connection.S21, all_the_data, onlyfiles)
+    # plot_magnitude(Connection.S21, all_the_data, onlyfiles)
+    # plot_phase(Connection.S21, all_the_data, onlyfiles)
     plot_double_magnitude(all_the_data, onlyfiles)
