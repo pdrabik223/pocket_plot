@@ -26,3 +26,5 @@ Example plots:
 ![S21](assets/S21%20real%20part.png)
 ![S21](assets/S21%20magnitude.png)
 ![S21](assets/S21%20phase.png)
+
+![s21ands11](assets/S11%20and%20S21%20Magnitude.png)
