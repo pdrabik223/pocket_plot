@@ -16,5 +16,5 @@ Script is written and tested using python 3.10
 
 Example plots:
 
-![s11](assets/s11.png)
-![s21](assets/s21.png)
+![s11](assets/s11 real part.png)
+![s21](assets/s21 real part.png)

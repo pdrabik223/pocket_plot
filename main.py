@@ -12,7 +12,7 @@ S21_IMAG = 'S21-S-Imaginary'
 
 
 def plot_s11_real(all_the_data: list[pd.DataFrame], labels=list[str]):
-    title = "s11"
+    title = "s11 real part"
     plt.xlabel("Frequency")
     plt.ylabel("No idea here")
     plt.title(title)
@@ -29,7 +29,7 @@ def plot_s11_real(all_the_data: list[pd.DataFrame], labels=list[str]):
 
 
 def plot_s21_real(all_the_data: list[pd.DataFrame], labels=list[str]):
-    title = "s21"
+    title = "s21 real part"
     plt.xlabel("Frequency")
     plt.ylabel("No idea here")
     plt.title(title)
@@ -50,10 +50,6 @@ def replace_comma_with_dot(string: str):
         return string.replace(',', '.')
     else:
         return string
-
-
-def uppercase_e(string: str):
-    return string.replace(',', '.')
 
 
 if __name__ == '__main__':
