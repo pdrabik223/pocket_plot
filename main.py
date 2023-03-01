@@ -146,7 +146,7 @@ def replace_comma_with_dot(string: str):
 
 if __name__ == '__main__':
     
-    directory_path = "dwie_anteny"
+    directory_path = "./example_data"
 
     # list all the '.csv' files under directory_path
     onlyfiles = [f for f in listdir(directory_path) if
@@ -167,6 +167,7 @@ if __name__ == '__main__':
 
     print(f"Number of loaded files: {len(all_the_data)}")
 
+    #evoking functions
     plot_real(Connection.S11, all_the_data, onlyfiles)
     plot_imag(Connection.S11, all_the_data, onlyfiles)
     plot_magnitude(Connection.S11, all_the_data, onlyfiles)
