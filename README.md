@@ -18,13 +18,19 @@ Example plots:
 
 
 ![S11_imag_part](assets/S11%20imaginary%20part.png)
+
 ![S11_real_part](assets/S11%20real%20part.png)
+
 ![S11_mag](assets/S11%20magnitude.png)
+
 ![S11_phase](assets/S11%20phase.png)
 
 ![S21_imag_part](assets/S21%20imaginary%20part.png)
+
 ![S21_real_part](assets/S21%20real%20part.png)
+
 ![S21_mag](assets/S21%20magnitude.png)
+
 ![S21_phase](assets/S21%20phase.png)
 
 ![s21ands11](assets/S11%20and%20S21%20Magnitude.png)
