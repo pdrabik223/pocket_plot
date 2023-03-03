@@ -2,7 +2,7 @@
 
 Quick script for automated plotting of several pocket scans
 
-Loads all scans present in provided directory, filters .csv files, and plots all values with filenames as labels
+Loads all scans present in provided directory, filters .csv and .s2p files, and plots all values with filenames as labels
 
 <!-- For user -->
 
