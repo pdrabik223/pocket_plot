@@ -4,6 +4,7 @@ import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import skrf as rf
 from os import listdir
 from os.path import isfile, join
 
@@ -20,6 +21,7 @@ class Connection(enum.Enum):
 
 def plot_config(title):
     plt.legend(bbox_to_anchor=(1, 1))
+    plt.title(title)
     plt.gcf().set_size_inches(21, 9)
     plt.savefig(f'{title}.png', dpi=200)
 
@@ -27,7 +29,6 @@ def plot_real(connection, all_the_data, labels):
     title = f"{str(connection.value)} real part"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
-    plt.title(title)
     x_axis = all_the_data[0][FREQUENCY].values.tolist()
 
     if connection == Connection.S11:
@@ -47,7 +48,6 @@ def plot_imag(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} imaginary part"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
-    plt.title(title)
     x_axis = all_the_data[0][FREQUENCY].values.tolist()
 
     if connection == Connection.S11:
@@ -71,7 +71,6 @@ def plot_magnitude(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} magnitude"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
-    plt.title(title)
     x_axis = all_the_data[0][FREQUENCY].values.tolist()
 
     if connection == Connection.S11:
@@ -99,7 +98,6 @@ def plot_phase(connection: Connection, all_the_data, labels):
     title = f"{str(connection.value)} phase"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
-    plt.title(title)
     x_axis = all_the_data[0][FREQUENCY].values.tolist()
 
     if connection == Connection.S11:
@@ -123,7 +121,6 @@ def plot_double_magnitude(all_the_data, labels):
     title = "S11 and S21 Magnitude"
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("[dB]")
-    plt.title(title)
     x_axis = all_the_data[0][FREQUENCY].values.tolist()
 
     for data, label in zip(all_the_data, labels):
@@ -136,6 +133,15 @@ def plot_double_magnitude(all_the_data, labels):
     plot_config(title)
     plt.show()
 
+def plot_s2p(onlyfiles_s2p):
+    title = "S11 and S21 Magnitude s2p"
+    for i in range(len(onlyfiles_s2p)):
+        s2p_data = rf.Network(f'./example_data/{onlyfiles_s2p[i]}')
+        s2p_data.plot_s_db(m=0, n=0) #plotting S11
+        s2p_data.plot_s_db(m=1, n=0) #plotting S21
+
+    plot_config(title)
+    plt.show()
 
 def replace_comma_with_dot(string: str):
     if isinstance(string, str):
@@ -151,6 +157,10 @@ if __name__ == '__main__':
     # list all the '.csv' files under directory_path
     onlyfiles = [f for f in listdir(directory_path) if
                  isfile(join(directory_path, f)) and join(directory_path, f)[-4:] == '.csv']
+    
+    # list all the '.s2p' files under directory_path
+    onlyfiles_s2p = [f for f in listdir(directory_path) if
+            isfile(join(directory_path, f)) and join(directory_path, f)[-4:] == '.s2p']
 
     # load data in '.csv' files to memory
     all_the_data = [pd.read_csv(join(directory_path, file), sep=';') for file in onlyfiles]
@@ -165,9 +175,9 @@ if __name__ == '__main__':
     for dataframe in all_the_data:
         print(dataframe.head())
 
-    print(f"Number of loaded files: {len(all_the_data)}")
+    print(f"Number of loaded files: {len(all_the_data)+len(onlyfiles_s2p)}\ncsv: {len(all_the_data)}\ns2p: {len(onlyfiles_s2p)} ")
 
-    #evoking functions 123
+    #evoking functions
     plot_real(Connection.S11, all_the_data, onlyfiles)
     plot_imag(Connection.S11, all_the_data, onlyfiles)
     plot_magnitude(Connection.S11, all_the_data, onlyfiles)
@@ -178,3 +188,5 @@ if __name__ == '__main__':
     plot_magnitude(Connection.S21, all_the_data, onlyfiles)
     plot_phase(Connection.S21, all_the_data, onlyfiles)
     plot_double_magnitude(all_the_data, onlyfiles)
+    
+    plot_s2p(onlyfiles_s2p)
