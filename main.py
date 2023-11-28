@@ -19,11 +19,11 @@ class Connection(enum.Enum):
     S11 = "S11"  # reflection   
     S21 = "S21" # transmition
 
-def plot_config(title):
+def plot_config(title, directory_path):
     plt.legend(bbox_to_anchor=(1, 1))
     plt.title(title)
     plt.gcf().set_size_inches(21, 9)
-    plt.savefig(f'{title}.png', dpi=200)
+    plt.savefig(f'{directory_path}/{title}.png', dpi=200)
 
 def plot_real(connection, all_the_data, labels):
     title = f"{str(connection.value)} real part"
@@ -40,7 +40,7 @@ def plot_real(connection, all_the_data, labels):
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
 
@@ -59,7 +59,7 @@ def plot_imag(connection: Connection, all_the_data, labels):
         y_values = data[column_name].values.tolist()
         plt.plot(x_axis, y_values, label=label)
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
 # magnitude [dB] = 20 * Log(sqr(Re^2 + Im^2))
@@ -85,7 +85,7 @@ def plot_magnitude(connection: Connection, all_the_data, labels):
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
 
@@ -112,7 +112,7 @@ def plot_phase(connection: Connection, all_the_data, labels):
                     zip(data[real_column_name].values.tolist(), data[imag_column_name].values.tolist())]
         plt.plot(x_axis, y_values, label=label)
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
 
@@ -130,17 +130,17 @@ def plot_double_magnitude(all_the_data, labels):
         y_values = [magnitude(r, i) for r, i in zip(data[S21_REAL].values.tolist(), data[S21_IMAG].values.tolist())]
         plt.plot(x_axis, y_values,label=f"s21 {label}")
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
-def plot_s2p(onlyfiles_s2p):
+def plot_s2p(onlyfiles_s2p, directory_path):
     title = "S11 and S21 Magnitude s2p"
     for i in range(len(onlyfiles_s2p)):
-        s2p_data = rf.Network(f'./example_data/{onlyfiles_s2p[i]}')
+        s2p_data = rf.Network(f'{directory_path}/{onlyfiles_s2p[i]}')
         s2p_data.plot_s_db(m=0, n=0) #plotting S11
         s2p_data.plot_s_db(m=1, n=0) #plotting S21
 
-    plot_config(title)
+    plot_config(title, directory_path)
     plt.show()
 
 def replace_comma_with_dot(string: str):
@@ -152,7 +152,7 @@ def replace_comma_with_dot(string: str):
 
 if __name__ == '__main__':
     
-    directory_path = "./example_data"
+    directory_path = "Q:/dzieci/pasek_olejniczaka/28.11_rownolegle"
 
     # list all the '.csv' files under directory_path
     onlyfiles = [f for f in listdir(directory_path) if
@@ -177,16 +177,17 @@ if __name__ == '__main__':
 
     print(f"Number of loaded files: {len(all_the_data)+len(onlyfiles_s2p)}\ncsv: {len(all_the_data)}\ns2p: {len(onlyfiles_s2p)} ")
 
-    #evoking functions
-    plot_real(Connection.S11, all_the_data, onlyfiles)
-    plot_imag(Connection.S11, all_the_data, onlyfiles)
-    plot_magnitude(Connection.S11, all_the_data, onlyfiles)
-    plot_phase(Connection.S11, all_the_data, onlyfiles)
+    # #evoking functions
+    if len(onlyfiles) != 0:
+        plot_real(Connection.S11, all_the_data, onlyfiles)
+        plot_imag(Connection.S11, all_the_data, onlyfiles)
+        plot_magnitude(Connection.S11, all_the_data, onlyfiles)
+        plot_phase(Connection.S11, all_the_data, onlyfiles)
 
-    plot_real(Connection.S21, all_the_data, onlyfiles)
-    plot_imag(Connection.S21, all_the_data, onlyfiles)
-    plot_magnitude(Connection.S21, all_the_data, onlyfiles)
-    plot_phase(Connection.S21, all_the_data, onlyfiles)
-    plot_double_magnitude(all_the_data, onlyfiles)
-    
-    plot_s2p(onlyfiles_s2p)
+        plot_real(Connection.S21, all_the_data, onlyfiles)
+        plot_imag(Connection.S21, all_the_data, onlyfiles)
+        plot_magnitude(Connection.S21, all_the_data, onlyfiles)
+        plot_phase(Connection.S21, all_the_data, onlyfiles)
+        plot_double_magnitude(all_the_data, onlyfiles)
+        
+    plot_s2p(onlyfiles_s2p, directory_path)
